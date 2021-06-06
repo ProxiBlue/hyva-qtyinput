@@ -3,6 +3,7 @@
         xsi:noNamespaceSchemaLocation="urn:magento:framework:Module/etc/module.xsd">
     <module name="ProxiBlue_HyvaQtyInput">
         <sequence>
+            <module name="Magento_Catalog"/>
             <module name="Hyva_Theme"/>
         </sequence>
     </module>

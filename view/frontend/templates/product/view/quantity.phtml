@@ -1,0 +1,117 @@
+<?php
+
+/*
+ * (c) Lucas van Staden <sales@proxiblue.com.au>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
+declare(strict_types=1);
+
+use Magento\Catalog\Block\Product\View;
+use Magento\Catalog\Model\Product;
+use Magento\Framework\Escaper;
+
+/** @var View $block */
+/** @var Escaper $escaper */
+
+/** @var Product $product */
+$product = $block->getProduct();
+$minQty = $block->getMinimalQty($product) * 1;
+$maxQty = $block->getMaxQty($product) * 1;
+$qtyStep =  $block->getQtyStep($product) * 1;
+
+?>
+
+<script>
+    function initQtyField() {
+        return {
+            qty: <?= $block->getProductDefaultQty() * 1 ?>,
+            itemId: '<?= (int)$block->getRequest()->getParam('id') ?>',
+            productId: '<?= (int)$product->getId() ?>',
+            minQty: <?= $minQty ?>,
+            maxQty: <?= $maxQty ?>,
+            qtyStep: <?= $qtyStep ?>,
+            onGetCartData: function onGetCartData($dispatch) {
+                var cart = event.detail.data && event.detail.data.cart;
+                if (cart && cart.items) {
+                    $this = this;
+                    var cartItem = cart.items.find(function (item) {
+                        return (
+                            item.item_id === $this.itemId
+                            && item.product_id === $this.productId
+                        )
+                    });
+                    if (cartItem && cartItem.qty) {
+                        qty = cartItem.qty;
+                        $dispatch('update-qty-<?= (int)$product->getId() ?>', qty);
+                    }
+                    if (cartItem && cartItem.options && cartItem.options.length) {
+                        $dispatch('update-options', cartItem.options);
+                    }
+                }
+            },
+            checkQtyRange: function checkQtyRange($dispatch) {
+                if(this.qty != null) {
+                    var qty = this.qty
+                    console.log(this.qty);
+                    if (this.maxQty > 0 && qty > this.maxQty) {
+                        qty = this.maxQty;
+                        var message = "<?= $escaper->escapeHtml(__('Maximum quantity of %1 exceeded. Value was set to maximum allowed', $maxQty))  ?>";
+                    }
+                    if (qty < this.minQty) {
+                        qty = this.minQty;
+                        var message = "<?=  $escaper->escapeHtml(__('Minimum quantity of %1 exceeded. Value was set to minimum allowed', $minQty))  ?>";
+                    }
+                    var checkStep = this.qty / <?= $qtyStep ?>;
+                    if(checkStep % 1 != 0) {
+                        qty = this.qtyStep;
+                        var message = "<?=  $escaper->escapeHtml(__('Please enter a value that is incremental of %1', $qtyStep))  ?>";
+                    }
+                    if (qty != this.qty) {
+                        this.qty = qty;
+                        this.message = message;
+                        window.dispatchMessages(
+                            [
+                                {
+                                    type: "warning",
+                                    text: message,
+                                },
+                            ],
+                            4000
+                        );
+                    }
+                    $dispatch('update-qty-<?= (int)$product->getId() ?>', this.qty);
+                }
+            }
+        };
+    }
+</script>
+<div x-data="initQtyField()"
+     class="">
+    <?php if ($product->isSaleable()): ?>
+        <div class="mr-2">
+            <label for="qty[<?= (int)$product->getId() ?>]"
+                   class="sr-only"
+            >
+                <?= $escaper->escapeHtml(__('Quantity')) ?>
+            </label>
+            <input name="qty"
+                   @private-content-loaded.window="onGetCartData($dispatch)"
+                   id="qty[<?= (int)$product->getId() ?>]"
+                   form="product_addtocart_form"
+                   type="number"
+                   pattern-="[0-9]{0,4}"
+                   :min="minQty"
+                   :max="maxQty"
+                   :value="qty"
+                   :step="qtyStep"
+                   class="form-input px-2 py-2 w-20 text-center"
+                   x-model.number="qty"
+                   @change="checkQtyRange($dispatch)"
+            />
+        </div>
+    <?php endif; ?>
+</div>
+

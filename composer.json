@@ -1,20 +1,26 @@
 {
-  "name": "proxi-blue/hyva-qtyinput",
-  "version": "1.0.0",
-  "description": "Enhance QTY input to honour min/max and increment values",
-  "type": "magento2-module",
-  "require": {
-    "magento/framework": "*"
-  },
-  "license": [
-    "MIT"
-  ],
-  "autoload": {
-    "files": [
-      "registration.php"
+    "name": "proxi-blue/hyva-qtyinput",
+    "version": "1.0.0",
+    "description": "Enhance QTY input to honour min/max and increment values",
+    "type": "magento2-module",
+    "require": {
+        "magento/framework": "*"
+    },
+    "license": [
+        "MIT"
     ],
-    "psr-4": {
-      "ProxiBlue\\HyvaQtyInput\\": ""
+    "authors": [
+        {
+            "name": "Lucas van Staden",
+            "email": "sales@proxiblue.com.au"
+        }
+    ],
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "ProxiBlue\\HyvaQtyInput\\": ""
+        }
     }
-  }
 }

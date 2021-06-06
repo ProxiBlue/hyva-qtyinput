@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+
+<!--
+/**
+ * (c) Lucas van Staden <sales@proxiblue.com.au>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+-->
+
+<page layout="1column" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="product.info.quantity" remove="true"/>
+        <referenceBlock name="product.info">
+            <block class="ProxiBlue\HyvaQtyInput\Block\Product\View"
+                   as="product.info.quantity"
+                   name="product.info.quantity.enhanced"
+                   template="ProxiBlue_HyvaQtyInput::product/view/quantity.phtml"
+            />
+        </referenceBlock>
+    </body>
+</page>
