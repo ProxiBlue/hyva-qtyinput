@@ -24,6 +24,19 @@ If a product is configured with either Min / Max and Quantity Increments, the qu
 If lower than min is entered, it will be set to the min value, and if more than max is entered, it will be set at the max value.
 The mouse up/down values will honour the step value.
 
+### Examples
+
+Min qty is 8, max qty is 10000, step is 8
+
+![image](https://user-images.githubusercontent.com/4994260/120951071-a4d08a80-c77a-11eb-8779-c3aa7d12daac.png)
+
+![image](https://user-images.githubusercontent.com/4994260/120951137-bdd93b80-c77a-11eb-8da1-0dc6613a86da.png)
+
+![image](https://user-images.githubusercontent.com/4994260/120951173-d21d3880-c77a-11eb-954c-d51d696b995f.png)
+
+
+https://user-images.githubusercontent.com/4994260/120951247-fb3dc900-c77a-11eb-9202-bf4297216304.mp4
+
 
 
 ## Note
