@@ -26,7 +26,7 @@ The mouse up/down values will honour the step value.
 
 ### Examples
 
-Min qty is 8, max qty is 10000, step is 8
+Min qty is 8, max qty is 100000, step is 8
 
 ![image](https://user-images.githubusercontent.com/4994260/120951071-a4d08a80-c77a-11eb-8779-c3aa7d12daac.png)
 
