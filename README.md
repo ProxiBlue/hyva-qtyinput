@@ -16,13 +16,14 @@ You can install via composer:
 
 ## Configuration
 
-The module does not add any new configuration options. The min/max/increment optiosn for product quantity is used from core inventory setup.
+The module does not add any new configuration options. The min/max/increment options for product quantity is used from core inventory setup.
 
 ## Using
 
 If a product is configured with either Min / Max and Quantity Increments, the quantity incrment field will notify user of incorrect values entered.
 If lower than min is entered, it will be set to the min value, and if more than max is entered, it will be set at the max value.
 The mouse up/down values will honour the step value.
+If a quantity step is needed, the user will be notifies entered value is not within teh steped range.
 
 ### Examples
 
