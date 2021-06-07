@@ -20,7 +20,7 @@ use Magento\Framework\Escaper;
 $product = $block->getProduct();
 $minQty = $block->getMinimalQty($product) * 1;
 $maxQty = $block->getMaxQty($product) * 1;
-$qtyStep =  $block->getQtyStep($product) * 1;
+$qtyStep = $block->getQtyStep($product) * 1;
 
 ?>
 
@@ -52,38 +52,32 @@ $qtyStep =  $block->getQtyStep($product) * 1;
                     }
                 }
             },
-            checkQtyRange: function checkQtyRange($dispatch) {
-                if(this.qty != null) {
+            checkQtyRange: function ($dispatch) {
+                if (this.qty != null) {
                     var qty = this.qty
-                    console.log(this.qty);
-                    if (this.maxQty > 0 && qty > this.maxQty) {
-                        qty = this.maxQty;
-                        var message = "<?= $escaper->escapeHtml(__('Maximum quantity of %1 exceeded. Value was set to maximum allowed', $maxQty))  ?>";
+                    if (qty > this.maxQty) {
+                        this.dispatchMessage("<?= $escaper->escapeHtml(__('Maximum quantity of %1 exceeded. Value was set to maximum allowed', $maxQty))  ?>");
+                        this.qty = this.maxQty;
+                    } else if (qty < this.minQty) {
+                        this.dispatchMessage("<?=  $escaper->escapeHtml(__('Minimum quantity of %1 exceeded. Value was set to minimum allowed', $minQty))  ?>");
+                        this.qty = this.minQty;
+                    } else if ((this.qty / <?= $qtyStep ?>) % 1 != 0) {
+                        this.dispatchMessage("<?=  $escaper->escapeHtml(__('Please enter a value that is incremental of %1', $qtyStep))  ?>")
+                        this.qty = this.minQty;
                     }
-                    if (qty < this.minQty) {
-                        qty = this.minQty;
-                        var message = "<?=  $escaper->escapeHtml(__('Minimum quantity of %1 exceeded. Value was set to minimum allowed', $minQty))  ?>";
-                    }
-                    var checkStep = this.qty / <?= $qtyStep ?>;
-                    if(checkStep % 1 != 0) {
-                        qty = this.qtyStep;
-                        var message = "<?=  $escaper->escapeHtml(__('Please enter a value that is incremental of %1', $qtyStep))  ?>";
-                    }
-                    if (qty != this.qty) {
-                        this.qty = qty;
-                        this.message = message;
-                        window.dispatchMessages(
-                            [
-                                {
-                                    type: "warning",
-                                    text: message,
-                                },
-                            ],
-                            4000
-                        );
-                    }
-                    $dispatch('update-qty-<?= (int)$product->getId() ?>', this.qty);
                 }
+                $dispatch('update-qty-<?= (int)$product->getId() ?>', this.qty);
+            },
+            dispatchMessage: function (message) {
+                window.dispatchMessages(
+                    [
+                        {
+                            type: "warning",
+                            text: message,
+                        },
+                    ],
+                    10000
+                );
             }
         };
     }
