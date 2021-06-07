@@ -42,5 +42,5 @@ https://user-images.githubusercontent.com/4994260/120951247-fb3dc900-c77a-11eb-9
 
 ## Note
 
-* Not tested with MSI enabled. The site build I created for this has MSI stripped out
-* Only tested with Simple Product Types
+* Not tested with MSI enabled. The site build I created this for has MSI stripped out
+* Only tested with Simple Product Types as the site I created this for only has simple products
