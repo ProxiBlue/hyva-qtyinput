@@ -9,13 +9,14 @@
 
 namespace ProxiBlue\HyvaQtyInput\Block\Product;
 
+
 class View extends \Magento\Catalog\Block\Product\View
 {
     /**
      * Gets minimal sales quantity
      *
      * @param \Magento\Catalog\Model\Product $product
-     * @return float|null
+     * @return Integer
      */
     public function getMaxQty($product)
     {
@@ -28,7 +29,7 @@ class View extends \Magento\Catalog\Block\Product\View
      * Gets quantity step
      *
      * @param \Magento\Catalog\Model\Product $product
-     * @return float|null
+     * @return Integer
      */
     public function getQtyStep($product)
     {
