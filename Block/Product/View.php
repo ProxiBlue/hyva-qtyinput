@@ -22,7 +22,12 @@ class View extends \Magento\Catalog\Block\Product\View
     {
         $stockItem = $this->stockRegistry->getStockItem($product->getId(), $product->getStore()->getWebsiteId());
         $maxSaleQty = $stockItem->getMaxSaleQty();
-        return $maxSaleQty > 0 ? $maxSaleQty : 10000000;
+        if ($maxSaleQty > 0 && $maxSaleQty < 100000) {
+            $product->addData(['max_sale_qty' => $maxSaleQty]);
+        } else {
+            $maxSaleQty = 100000;
+        }
+        return $maxSaleQty;
     }
 
     /**
@@ -35,7 +40,7 @@ class View extends \Magento\Catalog\Block\Product\View
     {
         $stockItem = $this->stockRegistry->getStockItem($product->getId(), $product->getStore()->getWebsiteId());
         $qtyStep = 1;
-        if($stockItem->getEnableQtyIncrements()) {
+        if ($stockItem->getEnableQtyIncrements()) {
             $qtyStep = $stockItem->getQtyIncrements();
         }
         return $qtyStep;

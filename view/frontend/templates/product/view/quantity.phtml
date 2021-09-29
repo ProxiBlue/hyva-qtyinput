@@ -21,7 +21,16 @@ $product = $block->getProduct();
 $minQty = $block->getMinimalQty($product) * 1;
 $maxQty = $block->getMaxQty($product) * 1;
 $qtyStep = $block->getQtyStep($product) * 1;
-
+$message = [];
+if ($minQty > 0) {
+    $message[] = $escaper->escapeHtml(__('Minimum quantity of %1', $minQty));
+}
+if ($qtyStep > 0) {
+    $message[] = $escaper->escapeHtml(__('Quantity increment of %1', $qtyStep));
+}
+if ($product->getData('max_sale_qty') > 0) {
+    $message[] = $escaper->escapeHtml(__('Maximum quantity of %1', $maxQty));
+}
 ?>
 
 <script>
@@ -82,30 +91,41 @@ $qtyStep = $block->getQtyStep($product) * 1;
         };
     }
 </script>
-<div x-data="initQtyField()"
-     class="">
-    <?php if ($product->isSaleable()): ?>
-        <div class="mr-2">
-            <label for="qty[<?= (int)$product->getId() ?>]"
-                   class="sr-only"
-            >
-                <?= $escaper->escapeHtml(__('Quantity')) ?>
-            </label>
-            <input name="qty"
-                   @private-content-loaded.window="onGetCartData($dispatch)"
-                   id="qty[<?= (int)$product->getId() ?>]"
-                   form="product_addtocart_form"
-                   type="number"
-                   pattern-="[0-9]{0,4}"
-                   :min="minQty"
-                   :max="maxQty"
-                   :value="qty"
-                   :step="qtyStep"
-                   class="form-input px-2 py-2 w-20 text-center"
-                   x-model.number="qty"
-                   @change="checkQtyRange($dispatch)"
-            />
-        </div>
+<div class="block mb-2">
+    <?php if (count($message) > 0): ?>
+        <ul style="list-style-type: disc;">
+            <?= __('This product has quantity limits:') ?>
+            <?php
+            foreach ($message as $qtyMessage):
+                ?>
+                <li class="ml-4"><?= $qtyMessage ?></li>
+            <?php
+            endforeach;
+            ?>
+        </ul>
     <?php endif; ?>
 </div>
-
+<div x-data="initQtyField()"
+     class="inline w-1/3 mr-2">
+    <div class="inline mr-2">
+        <label for="qty[<?= (int)$product->getId() ?>]"
+               class="sr-only"
+        >
+            <?= $escaper->escapeHtml(__('Quantity')) ?>
+        </label>
+        <input name="qty"
+               @private-content-loaded.window="onGetCartData($dispatch)"
+               id="qty[<?= (int)$product->getId() ?>]"
+               form="product_addtocart_form"
+               type="number"
+               pattern-="[0-9]{0,4}"
+               :min="minQty"
+               :max="maxQty"
+               :value="qty"
+               :step="qtyStep"
+               class="form-input px-2 py-2 w-20 text-center"
+               x-model.number="qty"
+               @change="checkQtyRange($dispatch)"
+        />
+    </div>
+</div>
