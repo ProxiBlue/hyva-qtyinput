@@ -22,13 +22,13 @@ $minQty = $block->getMinimalQty($product) * 1;
 $maxQty = $block->getMaxQty($product) * 1;
 $qtyStep = $block->getQtyStep($product) * 1;
 $message = [];
-if ($minQty > 0) {
+if ($minQty > 1) {
     $message[] = $escaper->escapeHtml(__('Minimum quantity of %1', $minQty));
 }
-if ($qtyStep > 0) {
+if ($qtyStep > 1) {
     $message[] = $escaper->escapeHtml(__('Quantity increment of %1', $qtyStep));
 }
-if ($product->getData('max_sale_qty') > 0) {
+if ($product->getData('max_sale_qty') > 0 && $product->getData('max_sale_qty') < 1000) {
     $message[] = $escaper->escapeHtml(__('Maximum quantity of %1', $maxQty));
 }
 ?>
