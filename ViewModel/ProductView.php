@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 /*
  * (c) Lucas van Staden <sales@proxiblue.com.au>
@@ -7,13 +9,31 @@
  * with this source code in the file LICENSE.
  */
 
-namespace ProxiBlue\HyvaQtyInput\Block\Product;
+namespace ProxiBlue\HyvaQtyInput\ViewModel;
 
+use Magento\CatalogInventory\Api\StockRegistryInterface;
+use Magento\Framework\View\Element\Block\ArgumentInterface;
 
-class View extends \Magento\Catalog\Block\Product\View
+class ProductView implements ArgumentInterface
 {
     /**
-     * Gets minimal sales quantity
+     * Although depricated, magento core is still using this: Magento\Catalog\Block\Product\AbstractProduct
+     *
+     * @var \Magento\CatalogInventory\Api\StockRegistryInterface
+     */
+    protected $stockRegistry;
+
+    /**
+     * ProductView constructor.
+     *
+     * @param StockRegistryInterface $stockRegistry
+     */
+    public function __construct(StockRegistryInterface $stockRegistry) {
+        $this->stockRegistry = $stockRegistry;
+    }
+
+    /**
+     * Gets max sales quantity
      *
      * @param \Magento\Catalog\Model\Product $product
      * @return Integer
@@ -22,10 +42,8 @@ class View extends \Magento\Catalog\Block\Product\View
     {
         $stockItem = $this->stockRegistry->getStockItem($product->getId(), $product->getStore()->getWebsiteId());
         $maxSaleQty = $stockItem->getMaxSaleQty();
-        if ($maxSaleQty > 0 && $maxSaleQty < 100000) {
-            $product->addData(['max_sale_qty' => $maxSaleQty]);
-        } else {
-            $maxSaleQty = 100000;
+        if($maxSaleQty == 0) {
+            $maxSaleQty = 10000; // a large default, as for some reason some result to 0, so this is a protection for max qty calculations
         }
         return $maxSaleQty;
     }

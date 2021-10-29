@@ -14,7 +14,7 @@
     <body>
         <referenceBlock name="product.info.quantity" remove="true"/>
         <referenceBlock name="product.info">
-            <block class="ProxiBlue\HyvaQtyInput\Block\Product\View"
+            <block class="Magento\Catalog\Block\Product\View"
                    as="product.info.quantity"
                    name="product.info.quantity.enhanced"
                    template="ProxiBlue_HyvaQtyInput::product/view/quantity.phtml"

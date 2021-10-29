@@ -12,15 +12,19 @@ declare(strict_types=1);
 use Magento\Catalog\Block\Product\View;
 use Magento\Catalog\Model\Product;
 use Magento\Framework\Escaper;
+use Hyva\Theme\Model\ViewModelRegistry;
 
 /** @var View $block */
 /** @var Escaper $escaper */
+/** @var ViewModelRegistry $viewModels */
+
+$productViewModel = $viewModels->require(\ProxiBlue\HyvaQtyInput\ViewModel\ProductView::class);
 
 /** @var Product $product */
 $product = $block->getProduct();
 $minQty = $block->getMinimalQty($product) * 1;
-$maxQty = $block->getMaxQty($product) * 1;
-$qtyStep = $block->getQtyStep($product) * 1;
+$maxQty = $productViewModel->getMaxQty($product) * 1;
+$qtyStep = $productViewModel->getQtyStep($product) * 1;
 $message = [];
 if ($minQty > 1) {
     $message[] = $escaper->escapeHtml(__('Minimum quantity of %1', $minQty));
@@ -28,7 +32,7 @@ if ($minQty > 1) {
 if ($qtyStep > 1) {
     $message[] = $escaper->escapeHtml(__('Quantity increment of %1', $qtyStep));
 }
-if ($product->getData('max_sale_qty') > 0 && $product->getData('max_sale_qty') < 1000) {
+if ($maxQty > 0 && $maxQty < 999) { // we don't want to display message if it is above 1000 as real world usage don't go there - need to be a config option!
     $message[] = $escaper->escapeHtml(__('Maximum quantity of %1', $maxQty));
 }
 ?>
