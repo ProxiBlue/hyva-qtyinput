@@ -1,6 +1,6 @@
 {
     "name": "proxi-blue/hyva-qtyinput",
-    "version": "1.0.5",
+    "version": "1.0.6",
     "description": "Enhance QTY input to honour min/max and increment values",
     "type": "magento2-module",
     "require": {
