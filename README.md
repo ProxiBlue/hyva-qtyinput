@@ -20,6 +20,15 @@ The module does not add any new configuration options. The min/max/increment opt
 
 ## Using
 
+You need to output this new enhanced qty block in your theme file.
+
+```
+vendor/hyva-themes/magento2-default-theme/Magento_Bundle/templates/catalog/product/view/summary.phtml
+vendor/hyva-themes/magento2-default-theme/Magento_Catalog/templates/product/view/product-info.phtml
+```
+
+and replace ```<?= $block->getChildHtml("product.info.quantity") ?>``` with ```<?= $block->getChildHtml("product.info.quantity.enhanced") ?>```
+
 If a product is configured with either Min / Max and Quantity Increments, the quantity incrment field will notify user of incorrect values entered.
 If lower than min is entered, it will be set to the min value, and if more than max is entered, it will be set at the max value.
 The mouse up/down values will honour the step value.
